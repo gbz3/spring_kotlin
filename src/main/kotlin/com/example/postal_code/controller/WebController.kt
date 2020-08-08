@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.multipart.MultipartException
 import org.springframework.web.multipart.MultipartFile
 import java.io.Serializable
 
@@ -23,6 +24,7 @@ class WebController {
     @PostMapping("/upload")
     fun upload(@ModelAttribute("form") form: FileUploadForm): String {
         log.trace("upload size=${form.uploadFile?.size}")
+        if (form.uploadFile != null && form.uploadFile!!.size >= 1024) throw MultipartException("over 1024")
         return "uploaded"
     }
 
