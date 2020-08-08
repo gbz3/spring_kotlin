@@ -33,7 +33,7 @@ class WebController {
                 .groupBy { it.zip }  // 郵便番号でグループ化
                 .map { listOf(it.key, joinAddress(it.value)) }
                 .filter { it[1].contains(sep) }
-                .forEach { log.trace("${it.toString()}") }
+                .forEach { log.trace(it.toString()) }
 
         return "uploaded"
     }
@@ -43,14 +43,10 @@ class WebController {
         return if (l.size == 1) l[0].ad1 + l[0].ad2 +l[0].ad3
         else
             l.asSequence()
-                    .groupBy { it.ad1 }
-                    .map { "${it.key}$sep${it.value.asSequence().map { v -> v.ad2 + v.ad3 }.joinToString(sep)}" }
+                    .groupBy { it.ad1 + it.ad2 }
+                    .mapValues { it.value.asSequence().map { v -> v.ad3 }.joinToString(sep) }
+                    .map { if (it.value != "") "${it.key}$sep${it.value}" else it.key }
                     .joinToString(sep)
-    }
-
-    private fun <K,V> Pair<K,V>.toEntry() = object: Map.Entry<K,V> {
-        override val key: K = first
-        override val value: V = second
     }
 
     data class Address(val zip: String, val ad1: String, val ad2: String, val ad3: String)
