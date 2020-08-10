@@ -5,7 +5,7 @@
     <title>Upload</title>
 </head>
 <body>
-    <form enctype="multipart/form-data" method="post" th:action="@{./upload}" th:object="${form}">
+    <form enctype="multipart/form-data" method="post" th:action="@{./{path}(path=${form.action})}" th:object="${form}">
         <input type="file" th:field="*{uploadFile}">
         <input type="submit" value="Upload">
     </form>
