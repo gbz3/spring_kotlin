@@ -9,25 +9,24 @@
     <h3>TABLE_NAME: <span>postal_code</span></h3>
     <table id="main">
     </table>
-<script>
+<script type="text/javascript">
+    let data = []
+
     $(() => {
-        loadTable()
+        loadData()
     })
 
-    const loadContentAsTable = async () => {
+    const loadData = async () => {
         const response = await fetch('http://localhost:8080/api/table/postal_code')
-        const data = await response.json()
-        let result = ""
-        for (const addr of data) {
-            result += `<tr><td>${addr.zip}</td><td>${addr.kanjiKen}</td><td>${addr.kanjiShi}</td><td>${addr.kanjiCho}</td></tr>`
-        }
-        return `<tbody>${result}</tbody>`
+        data = await response.json()
+        await showTable(addr => addr.zip.startsWith('76'))
     }
 
-    const loadTable = async () => {
-        const tbody = await loadContentAsTable()
-        const thead = `<thead><th>zip</th><th>kanjiKen</th><th>kanjiShi</th><th>kanjiCho</th></thead>`
-        $('#main').html(`${thead}${tbody}`)
+    const showTable = async (f) => {
+        const tbody = data.filter(f)
+            .map(addr => `<tr><td>${addr.zip}</td><td>${addr.kanjiKen}</td><td>${addr.kanjiShi}</td><td>${addr.kanjiCho}</td></tr>`)
+            .join('')
+        $('#main').html(`<thead><th>zip</th><th>kanjiKen</th><th>kanjiShi</th><th>kanjiCho</th></thead><tbody>${tbody}</tbody>`)
     }
 
 </script>
