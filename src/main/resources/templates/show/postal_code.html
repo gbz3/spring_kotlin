@@ -2,13 +2,16 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Upload</title>
-    <script type="text/javascript" th:src="@{/js/jquery-3.5.1.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 </head>
 <body>
     <h3>TABLE_NAME: <span>postal_code</span></h3>
     <table id="main">
     </table>
+<script type="text/javascript" th:src="@{/js/jquery-3.5.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
 <script type="text/javascript">
     let data = []
 
@@ -22,8 +25,9 @@
         await showTable(addr => addr.zip.startsWith('76'))
     }
 
-    const showTable = async (f) => {
-        const tbody = data.filter(f)
+    const showTable = async (f1, f2 = (a, b) => Number(a.zip) - Number(b.zip)) => {
+        const tbody = data.filter(f1)
+            .sort(f2)
             .map(addr => `<tr><td>${addr.zip}</td><td>${addr.kanjiKen}</td><td>${addr.kanjiShi}</td><td>${addr.kanjiCho}</td></tr>`)
             .join('')
         $('#main').html(`<thead><th>zip</th><th>kanjiKen</th><th>kanjiShi</th><th>kanjiCho</th></thead><tbody>${tbody}</tbody>`)
