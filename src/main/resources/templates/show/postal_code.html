@@ -12,27 +12,9 @@
     </table>
 <script type="text/javascript" th:src="@{/js/jquery-3.5.1.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
-<script type="text/javascript">
-    let data = []
-
-    $(() => {
-        loadData()
-    })
-
-    const loadData = async () => {
-        const response = await fetch('http://localhost:8080/api/table/postal_code')
-        data = await response.json()
-        await showTable(addr => addr.zip.startsWith('76'))
-    }
-
-    const showTable = async (f1, f2 = (a, b) => Number(a.zip) - Number(b.zip)) => {
-        const tbody = data.filter(f1)
-            .sort(f2)
-            .map(addr => `<tr><td>${addr.zip}</td><td>${addr.kanjiKen}</td><td>${addr.kanjiShi}</td><td>${addr.kanjiCho}</td></tr>`)
-            .join('')
-        $('#main').html(`<thead><th>zip</th><th>kanjiKen</th><th>kanjiShi</th><th>kanjiCho</th></thead><tbody>${tbody}</tbody>`)
-    }
-
+<script type="module">
+    import { getTableBody } from '/js/show_table.js'
+    getTableBody(addr => addr.zip.startsWith('76')).then(tbody => $('#main').html(tbody))
 </script>
 </body>
 </html>
