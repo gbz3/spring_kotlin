@@ -2,6 +2,7 @@
   Settings > Languages & Frameworks > TypeScript > Options:
   https://www.typescriptlang.org/docs/handbook/compiler-options.html
  */
+// noinspection JSUnusedGlobalSymbols
 class Address {
     code: string
     oldZip: string
@@ -23,6 +24,7 @@ async function loadData(): Promise<void> {
     }
 }
 
+// noinspection JSUnusedGlobalSymbols
 export async function getTableBody(f1, f2 = (a, b) => Number(a.zip) - Number(b.zip)): Promise<string> {
     await loadData()
     const tbody = data.filter(f1)
@@ -32,6 +34,7 @@ export async function getTableBody(f1, f2 = (a, b) => Number(a.zip) - Number(b.z
     return `<thead><th>zip</th><th>kanjiKen</th><th>kanjiShi</th><th>kanjiCho</th></thead><tbody>${tbody}</tbody>`
 }
 
+// noinspection JSUnusedGlobalSymbols
 export async function getKenOptions(): Promise<string> {
     await loadData()
     const kens = Array.from(new Set(data.map(addr => `${addr.zip.substring(0, 2)}${addr.kanjiKen}`))).sort()
